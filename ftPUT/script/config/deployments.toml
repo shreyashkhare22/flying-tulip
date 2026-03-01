@@ -1,0 +1,417 @@
+# deployments.toml
+# Usage Reference: https://getfoundry.sh/guides/scripting-with-config
+#
+# ftPUT Deployment Configuration
+#
+# Chain keys use numeric chain IDs:
+# - 1: Ethereum Mainnet
+# - 56: BNB Mainnet
+# - 146: Sonic Mainnet
+# - 8453: Base Mainnet
+# - 64165: Sonic Testnet
+# - 11155111: Sepolia Testnet
+# - 31337: Local/Anvil
+#
+# Sensitive data (private keys, RPC URLs, API keys) should be in .env
+
+# ============================================================================
+# Sonic Mainnet (Production)
+# ============================================================================
+[146]
+description = "Sonic Mainnet Production"
+
+[146.address]
+# Protocol Tokens
+usdc = "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+wNative = "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"  # wS (Wrapped Sonic)
+
+# FT Token (set to deploy address, or leave as 0x0 to deploy mock)
+ft = "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+
+# Aave v3 Protocol
+aave_pool_provider = "0x5C2e738F6E27bCE0F7558051Bf90605dD6176900"
+aave_oracle = "0xD63f7658C66B2934Bd234D79D06aEF5290734B30"
+aave_ausdc = "0x578Ee1ca3a8E1b54554Da1Bf7C583506C4CD11c6"  # aUSD
+aave_awnative = "0x6C5E14A212c1C3e4Baf6f871ac9B1a969918c131"  # awS
+
+# Roles (use deployer if 0x0, set actual addresses for production)
+msig = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+configurator = "0x22246a9183ce2ce6e2c2a9973f94aea91435017c"
+treasury = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+yield_claimer = "0x333A1ad484b540EcAc1edFa73a066aB57275293C"
+strategy_manager = "0x5557729b169082f07d3131D560E2f2cb5e6c48f6"
+
+[146.uint]
+# Collateral caps (0 = unlimited)
+cap_usdc = 0
+cap_wnative = 0
+
+# Initial FT offering supply
+# For production: set to "0" - FT liquidity is added manually post-deployment by FT configurator
+# For testnet/mock: set to actual amount (e.g., "10000000000000000000000000000" for 10B FT)
+initial_ft_supply = "0"
+
+# Circuit Breaker Configuration (optional - omit or set to 0 to use recommended defaults)
+# Defaults: 5% max draw rate, 4h main window, 2h elastic window
+#
+# Max Draw Rate (WAD): Maximum withdrawal rate as percentage of TVL
+#   - 5% = 50000000000000000 (recommended)
+#   - 10% = 100000000000000000 (more permissive)
+# Main Window: Time for main buffer to fully replenish (seconds)
+#   - 14400 = 4 hours (recommended)
+# Elastic Window: Time for elastic buffer to decay to zero (seconds)
+#   - 7200 = 2 hours (recommended)
+#
+# To use defaults, omit these lines or set to 0:
+# cb_max_draw_rate_wad = 0
+# cb_main_window = 0
+# cb_elastic_window = 0
+#
+# To override defaults, uncomment and set custom values:
+# cb_max_draw_rate_wad = "50000000000000000"
+# cb_main_window = 14400
+# cb_elastic_window = 7200
+
+[146.bool]
+is_production = true
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+
+# Circuit Breaker: Set to true to deploy circuit breaker with rate limiting
+deploy_circuit_breaker = true
+
+[146.bytes32]
+# ACL merkle root (update before production deployment)
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Ethereum Mainnet (Production)
+# ============================================================================
+[1]
+description = "Ethereum Mainnet Production"
+
+[1.address]
+# Protocol Tokens
+usdc = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+wNative = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"  # wETH (Wrapped Ethereum)
+usdt = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+usds = "0xdC035D45d973E3EC169d2276DDab16f1e407384F"
+usdtb = "0xC139190F447e929f090Edeb554D95AbB8b18aC1C"
+usde = "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+
+# FT Token (set to deploy address, or leave as 0x0 to deploy mock)
+ft = "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+
+# Aave v3 Protocol
+aave_pool_provider = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e"
+aave_oracle = "0x54586bE62E3c3580375aE3723C145253060Ca0C2"
+aave_ausdc = "0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c"  # aUSD
+aave_awnative = "0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8"  # awETH
+aave_ausdt = "0x23878914EFE38d27C4D67Ab83ed1b93A74D4086a"
+aave_ausds = "0x32a6268f9Ba3642Dda7892aDd74f1D34469A4259"
+aave_ausdtb = "0xEc4ef66D4fCeEba34aBB4dE69dB391Bc5476ccc8"
+aave_ausde = "0x4F5923Fc5FD4a93352581b38B7cD26943012DECF"
+
+# Roles (use deployer if 0x0, set actual addresses for production)
+msig = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+configurator = "0x22246a9183ce2ce6e2c2a9973f94aea91435017c"
+treasury = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+yield_claimer = "0x333A1ad484b540EcAc1edFa73a066aB57275293C"
+strategy_manager = "0x5557729b169082f07d3131D560E2f2cb5e6c48f6"
+
+[1.uint]
+# Collateral caps (0 = unlimited)
+cap_usdc = 0
+cap_wnative = 0
+cap_usdt = 0
+cap_usds = 0
+cap_usdtb = 0
+cap_usde = 0
+
+# Initial FT offering supply
+# For production: set to "0" - FT liquidity is added manually post-deployment by FT configurator
+# For testnet/mock: set to actual amount (e.g., "10000000000000000000000000000" for 10B FT)
+initial_ft_supply = "0"
+
+[1.bool]
+is_production = true
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = true
+# CB parameters: omitted = use defaults (5%, 4h, 2h)
+
+[1.bytes32]
+# ACL merkle root (update before production deployment)
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# BNB Mainnet (Production)
+# ============================================================================
+[56]
+description = "BNB Mainnet Production"
+
+[56.address]
+# Protocol Tokens
+wNative = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"  # wBNB (Wrapped BNB)
+
+# FT Token (set to deploy address, or leave as 0x0 to deploy mock)
+ft = "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+
+# Aave v3 Protocol
+aave_pool_provider = "0xff75B6da14FfbbfD355Daf7a2731456b3562Ba6D"
+aave_oracle = "0x39bc1bfDa2130d6Bb6DBEfd366939b4c7aa7C697"
+aave_awnative = "0x9B00a09492a626678E5A3009982191586C444Df9"  # awBNB
+
+# Roles (use deployer if 0x0, set actual addresses for production)
+msig = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+configurator = "0x22246a9183ce2ce6e2c2a9973f94aea91435017c"
+treasury = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+yield_claimer = "0x333A1ad484b540EcAc1edFa73a066aB57275293C"
+strategy_manager = "0x5557729b169082f07d3131D560E2f2cb5e6c48f6"
+
+[56.uint]
+# Collateral caps (0 = unlimited)
+cap_wnative = 0
+
+# Initial FT offering supply
+# For production: set to "0" - FT liquidity is added manually post-deployment by FT configurator
+# For testnet/mock: set to actual amount (e.g., "10000000000000000000000000000" for 10B FT)
+initial_ft_supply = "0"
+
+[56.bool]
+is_production = true
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = true
+# CB parameters: omitted = use defaults (5%, 4h, 2h)
+
+[56.bytes32]
+# ACL merkle root (update before production deployment)
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Base Mainnet (Production)
+# ============================================================================
+[8453]
+description = "Base Mainnet Production"
+
+[8453.address]
+# Protocol Tokens
+usdc = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+wNative = "0x4200000000000000000000000000000000000006"  # wETH (Wrapped ETH)
+
+# FT Token (set to deploy address, or leave as 0x0 to deploy mock)
+ft = "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+
+# Aave v3 Protocol
+aave_pool_provider = "0xe20fCBdBfFC4Dd138cE8b2E6FBb6CB49777ad64D"
+aave_oracle = "0x2Cc0Fc26eD4563A5ce5e8bdcfe1A2878676Ae156"
+aave_ausdc = "0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB"  # aUSD
+aave_awnative = "0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7"  # awETH
+
+# Roles (use deployer if 0x0, set actual addresses for production)
+msig = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+configurator = "0x22246a9183ce2ce6e2c2a9973f94aea91435017c"
+treasury = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+yield_claimer = "0x333A1ad484b540EcAc1edFa73a066aB57275293C"
+strategy_manager = "0x5557729b169082f07d3131D560E2f2cb5e6c48f6"
+
+[8453.uint]
+# Collateral caps (0 = unlimited)
+cap_usdc = 0
+cap_wnative = 0
+
+# Initial FT offering supply
+# For production: set to "0" - FT liquidity is added manually post-deployment by FT configurator
+# For testnet/mock: set to actual amount (e.g., "10000000000000000000000000000" for 10B FT)
+initial_ft_supply = "0"
+
+[8453.bool]
+is_production = true
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = true
+# CB parameters: omitted = use defaults (5%, 4h, 2h)
+
+[8453.bytes32]
+# ACL merkle root (update before production deployment)
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Avalanche Mainnet (Production)
+# ============================================================================
+[43114]
+description = "Avalanche Mainnet Production"
+
+[43114.address]
+# Protocol Tokens
+usdc = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"
+wNative = "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"  # wAVAX (Wrapped AVAX)
+usdt = "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7"
+
+# FT Token (set to deploy address, or leave as 0x0 to deploy mock)
+ft = "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+
+# Aave v3 Protocol
+aave_pool_provider = "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb"
+aave_oracle = "0xEBd36016B3eD09D4693Ed4251c67Bd858c3c7C9C"
+aave_ausdc = "0x625E7708f30cA75bfd92586e17077590C60eb4cD"  # aUSD
+aave_awnative = "0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97"  # awAVAX
+aave_ausdt = "0x6ab707Aca953eDAeFBc4fD23bA73294241490620"
+
+# Roles (use deployer if 0x0, set actual addresses for production)
+msig = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+configurator = "0x22246a9183ce2ce6e2c2a9973f94aea91435017c"
+treasury = "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+yield_claimer = "0x333A1ad484b540EcAc1edFa73a066aB57275293C"
+strategy_manager = "0x5557729b169082f07d3131D560E2f2cb5e6c48f6"
+
+[43114.uint]
+# Collateral caps (0 = unlimited)
+cap_usdc = 0
+cap_wnative = 0
+cap_usdt = 0
+
+# Initial FT offering supply
+# For production: set to "0" - FT liquidity is added manually post-deployment by FT configurator
+# For testnet/mock: set to actual amount (e.g., "10000000000000000000000000000" for 10B FT)
+initial_ft_supply = "0"
+
+[43114.bool]
+is_production = true
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = true
+# CB parameters: omitted = use defaults (5%, 4h, 2h)
+
+[43114.bytes32]
+# ACL merkle root (update before production deployment)
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Sonic Testnet
+# ============================================================================
+[64165]
+description = "Sonic Testnet"
+
+[64165.address]
+# Testnet tokens (update with actual testnet addresses)
+usdc = "0x0000000000000000000000000000000000000000"
+wNative = "0x0000000000000000000000000000000000000000"
+ft = "0x0000000000000000000000000000000000000000"
+
+# Aave testnet (update with actual testnet addresses if available)
+aave_pool_provider = "0x0000000000000000000000000000000000000000"
+aave_oracle = "0x0000000000000000000000000000000000000000"
+aave_ausdc = "0x0000000000000000000000000000000000000000"
+aave_awnative = "0x0000000000000000000000000000000000000000"
+
+# Testnet roles (deployer by default)
+msig = "0x0000000000000000000000000000000000000000"
+configurator = "0x0000000000000000000000000000000000000000"
+treasury = "0x0000000000000000000000000000000000000000"
+yield_claimer = "0x0000000000000000000000000000000000000000"
+strategy_manager = "0x0000000000000000000000000000000000000000"
+
+[64165.uint]
+cap_usdc = 0
+cap_wnative = 0
+# For testnet with mock FT (ft=0x0), this value is REQUIRED and used to mint mock tokens
+initial_ft_supply = "10000000000000000000000000000"
+
+[64165.bool]
+is_production = false
+disable_acl = true  # No ACL for testnet
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = false  # CB disabled for testnet
+
+[64165.bytes32]
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Sepolia Testnet 
+# ============================================================================
+[11155111]
+description = "Sepolia Testnet"
+
+[11155111.address]
+# Protocol Tokens (replace with Sepolia addresses)
+usdc = "0x0000000000000000000000000000000000000000"
+wNative = "0x0000000000000000000000000000000000000000"
+
+# FT Token (set to deployment address, or leave as 0x0 to deploy mock)
+ft = "0x0000000000000000000000000000000000000000"
+
+# Aave (or equivalent) addresses for Sepolia
+aave_pool_provider = "0x0000000000000000000000000000000000000000"
+aave_oracle = "0x0000000000000000000000000000000000000000"
+aave_ausdc = "0x0000000000000000000000000000000000000000"
+aave_awnative = "0x0000000000000000000000000000000000000000"
+
+# Roles (deployer by default)
+msig = "0x0000000000000000000000000000000000000000"
+configurator = "0x0000000000000000000000000000000000000000"
+treasury = "0x0000000000000000000000000000000000000000"
+yield_claimer = "0x0000000000000000000000000000000000000000"
+strategy_manager = "0x0000000000000000000000000000000000000000"
+
+[11155111.uint]
+cap_usdc = 0
+cap_wnative = 0
+# For testnet with mock FT (ft=0x0), this value is REQUIRED and used to mint mock tokens
+initial_ft_supply = "10000000000000000000000000000"
+
+[11155111.bool]
+is_production = false
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = false  # CB disabled for testnet
+
+[11155111.bytes32]
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# ============================================================================
+# Local Development (Anvil/Hardhat)
+# ============================================================================
+[31337]
+description = "Local Development Chain"
+
+[31337.address]
+# Will deploy mock tokens for local testing
+usdc = "0x0000000000000000000000000000000000000000"
+wNative = "0x0000000000000000000000000000000000000000"
+ft = "0x0000000000000000000000000000000000000000"
+aave_pool_provider = "0x0000000000000000000000000000000000000000"
+aave_oracle = "0x0000000000000000000000000000000000000000"
+aave_ausdc = "0x0000000000000000000000000000000000000000"
+aave_awnative = "0x0000000000000000000000000000000000000000"
+
+# Use deployer for all roles in local dev
+msig = "0x0000000000000000000000000000000000000000"
+configurator = "0x0000000000000000000000000000000000000000"
+treasury = "0x0000000000000000000000000000000000000000"
+yield_claimer = "0x0000000000000000000000000000000000000000"
+strategy_manager = "0x0000000000000000000000000000000000000000"
+
+[31337.uint]
+cap_usdc = 0
+cap_wnative = 0
+# For local dev with mock FT (ft=0x0), this value is REQUIRED and used to mint mock tokens
+initial_ft_supply = "10000000000000000000000000000"
+
+[31337.bool]
+is_production = false
+disable_acl = true
+# Sale enabled after deployment (set to false to disable sales initially)
+sale_enabled = false
+deploy_circuit_breaker = false  # CB disabled for local dev
+
+[31337.bytes32]
+merkle_root = "0x0000000000000000000000000000000000000000000000000000000000000000"

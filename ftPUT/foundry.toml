@@ -1,0 +1,40 @@
+[profile.default]
+src = "contracts"
+test = "test"
+libs = ["lib"]
+out = "out"
+cache_path = "cache"
+solc_version = "0.8.30"
+via_ir = true
+optimizer = true
+optimizer_runs = 999_999
+evm_version = "cancun"
+fs_permissions = [{ access = "read-write", path = "./"}]
+
+[fmt]
+line_length = 100
+multiline_func_header = "all"
+
+[rpc_endpoints]
+sonic = "${SONIC_RPC_URL}"
+sonic_testnet = "${SONIC_TESTNET_RPC_URL}"
+
+[etherscan]
+# Sonic mainnet (chain id 146)
+146 = { key = "${ETHERSCAN_API_KEY}", url = "https://api.sonicscan.org/api", browser = "https://sonicscan.org" }
+# Sonic testnet (chain id 14601)
+14601 = { key = "${ETHERSCAN_API_KEY}", url = "https://api-testnet.sonicscan.org/api", browser = "https://testnet.sonicscan.org" }
+
+[fuzz]
+runs = 256
+
+[invariant]
+runs = 64
+fail_on_revert = true
+
+[lint]
+exclude_lints = [
+    "mixed-case-function",
+    "mixed-case-variable",
+    "screaming-snake-case-immutable",
+]

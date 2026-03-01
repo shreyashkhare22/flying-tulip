@@ -1,0 +1,21 @@
+{
+  "name": "flying-tulip-put-sale",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "coverage": "forge coverage --report lcov && genhtml lcov.info --ignore-errors inconsistent --branch-coverage --legend -o coverage",
+    "test": "forge test",
+    "test:coverage": "forge coverage",
+    "test:gas": "REPORT_GAS=true forge test",
+    "compile": "forge build",
+    "clean": "forge clean",
+    "setup-fork": "forge script scripts/setup-sonic-fork.s.sol",
+    "deploy": "forge script scripts/deploy.s.sol",
+    "deploy:mocks": "forge script scripts/deploy-mocks.s.sol",
+    "deploy:sonic": "forge script scripts/deploy.s.sol --network sonic",
+    "deploy:sonic-testnet": "forge script scripts/deploy.s.sol --network sonic_testnet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
